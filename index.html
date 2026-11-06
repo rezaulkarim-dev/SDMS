@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDMS - Smart Disaster Management System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Top Navigation Bar -->
+    <header class="navbar">
+        <div class="logo">
+            <div class="logo">
+            <img src="img/logo1.png" alt="SDMS Logo" class="logo-img">
+            <div>
+            </div>
+        </div>
+            <div>
+                <!-- <h1>SDMS</h1>
+                <p>Smart Disaster Management System</p> -->
+            </div>
+        </div>
+        <nav class="nav-links">
+            <a href="#alerts">Alerts</a>
+            <a href="#shelters">Shelters</a>
+            <a href="#ai-prediction">AI Risk Forecast</a>
+            <a href="#volunteer">Volunteer</a>
+            <button class="btn-outline" onclick="openModal('loginModal')">Manager / Admin Login</button>
+        </nav>
+    </header>
+
+    <!-- Active Emergency Warning Banner -->
+    <div class="alert-banner" id="alerts">
+        <div class="alert-content">
+            <span class="alert-badge">🔴 LIVE WARNING</span>
+            <p><strong>Cyclone Alert Signal 7:</strong> Coastal areas of Chattogram (Patenga, Halishahar, Anwara) are advised to prepare for heavy rainfall and storm surge. Move to nearby shelters if located in low-lying zones.</p>
+        </div>
+    </div>
+
+    <!-- Main Hero & Search Section -->
+    <section class="hero">
+        <h2>Emergency Response & Shelter Directory</h2>
+        <p>Real-time flood and cyclone updates, live shelter availability, and community volunteer coordination.</p>
+        
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search shelters by area (e.g., Halishahar, Patenga, Agrabad)..." onkeyup="filterShelters()">
+            <button onclick="filterShelters()">Search</button>
+        </div>
+    </section>
+
+    <!-- Quick Stats Overview -->
+    <section class="stats-container">
+        <div class="stat-card alert-stat">
+            <h3>2</h3>
+            <p>Active Warnings</p>
+        </div>
+        <div class="stat-card shelter-stat">
+            <h3 id="openShelterCount">4</h3>
+            <p>Open Shelters Nearby</p>
+        </div>
+        <div class="stat-card volunteer-stat">
+            <h3 id="volunteerCount">128</h3>
+            <p>Registered Volunteers</p>
+        </div>
+    </section>
+
+    <!-- AI Predictive Alert Component (Advisory) -->
+    <section class="ai-section" id="ai-prediction">
+        <div class="ai-card">
+            <div class="ai-header">
+                <span class="ai-badge">🤖 AI Predictive Risk Model (Advisory)</span>
+                <span class="ai-confidence">Model Confidence: 84%</span>
+            </div>
+            <h3>24-Hour Flood & Surge Forecast — Chattogram Coastal Belt</h3>
+            <p>Based on current atmospheric pressure and tidal data, the predictive model flags a <strong>High Risk of Flash Flooding</strong> in low-lying areas of Halishahar and Bakalia within the next 12–18 hours.</p>
+            <small class="ai-note">*Note: Predictive alerts are advisory only and support official government warnings.</small>
+        </div>
+    </section>
+
+    <!-- Shelter Directory Section -->
+    <section class="shelters-section" id="shelters">
+        <div class="section-header">
+            <h2>Available Shelters Near You</h2>
+            <div class="filter-buttons">
+                <button class="filter-btn active" onclick="filterByStatus('all', this)">All Shelters</button>
+                <button class="filter-btn" onclick="filterByStatus('available', this)">Space Available</button>
+                <button class="filter-btn" onclick="filterByStatus('full', this)">Full</button>
+            </div>
+        </div>
+
+        <!-- Shelter Cards Grid (Populated by JavaScript) -->
+        <div class="shelter-grid" id="shelterGrid">
+            <!-- JavaScript will load the shelters here -->
+        </div>
+    </section>
+
+    <!-- Volunteer & Manager Action Section -->
+    <section class="action-section" id="volunteer">
+        <div class="action-card">
+            <h3>🤝 Join as a Community Volunteer</h3>
+            <p>Register your availability and skills so authorities can deploy help where it is needed most during an emergency.</p>
+            <button class="btn-primary" onclick="openModal('volunteerModal')">Register as Volunteer</button>
+        </div>
+        <div class="action-card">
+            <h3>🏢 Shelter Manager & Authority Portal</h3>
+            <p>Are you a shelter manager or local official? Log in to update real-time shelter capacity or publish new emergency alerts.</p>
+            <button class="btn-secondary" onclick="openModal('loginModal')">Update Shelter Capacity</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p><strong>Smart Disaster Management System (SDMS)</strong> — USTC Department of CSE (Batch 41) | CSE 414: Software Engineering Lab</p>
+        <p>Developed by Md Farhan Uddin, Md Sajjed Hossin Simon, and Md Rezaul Karim</p>
+    </footer>
+
+    <!-- Volunteer Registration Modal (Popup) -->
+    <div class="modal" id="volunteerModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('volunteerModal')">&times;</span>
+            <h3>Volunteer Registration</h3>
+            <p>Sign up to assist with evacuation, relief distribution, or first aid.</p>
+            <form id="volunteerForm" onsubmit="submitVolunteer(event)">
+                <label>Full Name</label>
+                <input type="text" id="volName" required placeholder="Enter your full name">
+                
+                <label>Phone Number</label>
+                <input type="tel" id="volPhone" required placeholder="e.g., 018XXXXXXXX">
+                
+                <label>Preferred Area in Chattogram</label>
+                <select id="volArea" required>
+                    <option value="">Select an area...</option>
+                    <option value="Halishahar">Halishahar</option>
+                    <option value="Patenga">Patenga</option>
+                    <option value="Agrabad">Agrabad</option>
+                    <option value="GEC / Khulshi">GEC / Khulshi</option>
+                    <option value="Bakalia">Bakalia</option>
+                </select>
+
+                <label>Primary Skill / Role</label>
+                <select id="volSkill" required>
+                    <option value="Rescue & Evacuation">Rescue & Evacuation</option>
+                    <option value="First Aid & Medical">First Aid & Medical</option>
+                    <option value="Food & Relief Distribution">Food & Relief Distribution</option>
+                </select>
+
+                <button type="submit" class="btn-primary full-width">Submit Registration</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Shelter Manager / Admin Quick Update Modal (Popup) -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('loginModal')">&times;</span>
+            <h3>Shelter Manager — Quick Capacity Update</h3>
+            <p>Demo Mode: Select a shelter below to update its live capacity on the dashboard.</p>
+            <form id="managerForm" onsubmit="updateShelterCapacity(event)">
+                <label>Select Shelter</label>
+                <select id="manageShelterSelect" required>
+                    <!-- Populated by JS -->
+                </select>
+
+                <label>Current Occupants (People Inside)</label>
+                <input type="number" id="newOccupancy" required min="0" placeholder="Enter current number of people">
+
+                <button type="submit" class="btn-primary full-width">Update Live Capacity</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
